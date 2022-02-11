@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import { useEffect } from 'react';
 import {
   Switch,
   Route,
@@ -18,16 +19,17 @@ const AppRoutes:FC = (): JSX.Element => {
 
   const historyPush = (path: string) => history.push(path + history.location.search);
 
-  if (!isValidPath) {
-    historyPush(Paths.LIST_PAYMENT_METHODS)
-  }
+  useEffect(() => {
+    if (!isValidPath) {
+      historyPush(Paths.LIST_PAYMENT_METHODS)
+    }
+  }, [])
 
   return config ? (
     <Switch>
       {Object.values(routes().map((val) => (
         <Route
           key={val.path}
-          exact
           path={val.path}
           component={val.cmpnt}
         />
