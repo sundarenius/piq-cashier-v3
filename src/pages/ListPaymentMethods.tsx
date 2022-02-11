@@ -1,9 +1,11 @@
 import type { FC } from 'react';
+import { useTranslation } from "react-i18next";
 
 interface Props {}
 
 const ListPaymentMethods:FC<Props> = (): JSX.Element => {
-  const txt = 'ListPaymentMethods page';
+  const { t } = useTranslation();
+  const txt = t('Citadel');
   return (
     <h1>
       {txt}

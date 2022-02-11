@@ -8,13 +8,15 @@ import {
 interface InitialState {
   config: null|Partial<Config>, // will contain all
   defaultConfig: null|Partial<Config>, // will contain all
-  paymentMethods: any
+  paymentMethods: any,
+  transactionsHistory: any
 }
 
 const initialState: InitialState = {
   config: null,
   defaultConfig: null,
-  paymentMethods: null
+  paymentMethods: null,
+  transactionsHistory: null
 };
 
 export const contextSlice = createSlice({
@@ -33,6 +35,12 @@ export const contextSlice = createSlice({
         ...state.defaultConfig && state.defaultConfig,
         ...action.payload,
       };
+    },
+    setPaymentMethods: (state, action: PayloadAction<any>) => {
+      state.paymentMethods = action.payload
+    },
+    setTransactionsHistory: (state, action: PayloadAction<any>) => {
+      state.transactionsHistory = action.payload
     },
   },
 });

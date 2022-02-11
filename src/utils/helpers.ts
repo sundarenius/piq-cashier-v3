@@ -118,9 +118,5 @@ export const getShouldLoadApp = async ({
 
   await handleInitialApiRequests(initRequestsCallback);
 
-  await new Promise(res => { setTimeout(() => {
-    res(null)
-  }, 1500); })
-
   setShouldLoadApp(getShouldLoadApp)
 }

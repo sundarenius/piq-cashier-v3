@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import { lazy } from 'react';
 import { Paths } from 'types/globals';
+import API from 'service/service';
+import { initTranslations } from 'utils/translations';
 
 const ListPaymentMethods = lazy(() => import('pages/ListPaymentMethods'));
 const PaymentMethod = lazy(() => import('pages/PaymentMethod'));
@@ -15,15 +17,28 @@ interface RouteData {
 }
 
 export const standardInitRequests = async ({config, dispatch, contextActions}) => {
-  return 'heh'
+  const paymentMethodsRes = API.fetchPaymentMethods(config)
+  const translationsRes = API.fetchTranslations(config)
+  const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes])
+  initTranslations(translations)
+  dispatch(contextActions.setPaymentMethods(paymentMethods))
+  return true
 }
 
 const statusInitRequests = async ({config, dispatch, contextActions}) => {
-  return 'heh'
+  const translationsRes = API.fetchTranslations(config)
+  const [translations] = await Promise.all([translationsRes])
+  initTranslations(translations)
+  return true
 }
 
 const transactionsInitRequests = async ({config, dispatch, contextActions}) => {
-  return 'heh'
+  const translationsRes = API.fetchTranslations(config)
+  const transactionsRes = API.fetchTransactionHistory(config)
+  const [translations, transactions] = await Promise.all([translationsRes, transactionsRes])
+  initTranslations(translations)
+  dispatch(contextActions.setTransactionsHistory(transactions))
+  return true
 }
 
 export const routes = (): RouteData[] => ([
