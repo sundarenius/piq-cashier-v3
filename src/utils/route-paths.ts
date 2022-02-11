@@ -21,7 +21,7 @@ export const standardInitRequests = async ({config, dispatch, contextActions}) =
   const translationsRes = API.fetchTranslations(config)
   const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes])
   initTranslations(translations)
-  dispatch(contextActions.setPaymentMethods(paymentMethods))
+  dispatch(contextActions.setPaymentMethods(paymentMethods.data))
   return true
 }
 
