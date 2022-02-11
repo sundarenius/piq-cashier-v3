@@ -47,9 +47,9 @@ const AppRoutes:FC = (): JSX.Element => {
     </Switch>
   )
   : (
-    <div>
+    <>
       {currentRouteData.initLoader && <Loader />}
-    </div>
+    </>
   );
 };
 
