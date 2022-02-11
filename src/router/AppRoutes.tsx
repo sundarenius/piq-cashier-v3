@@ -34,6 +34,7 @@ const AppRoutes:FC = (): JSX.Element => {
 
   console.log('CONFIG from AppRoutes:')
   console.log(config)
+  console.log(currentRouteData)
 
   return config ? (
     <Switch>

@@ -2,6 +2,7 @@ export enum Paths {
   LIST_PAYMENT_METHODS = '/list-payment-methods',
   PAYMENT_METHOD = '/payment-method',
   STATUS = '/status',
+  TRANSACTIONS = '/transactions'
 }
 
 export enum Environments {
@@ -77,4 +78,12 @@ export const initialConfig: Config = {
   [ConfigKeys.FETCH_CONFIG]: false,
   [ConfigKeys.CHANNEL_ID]: null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false
+}
+
+
+export enum InitRequests {
+  PAYMENT_METHODS = 'payment methods',
+  TRANSLATIONS = 'translations',
+  TRANSACTIONS = 'transactions',
+  CONFIG = 'config'
 }
