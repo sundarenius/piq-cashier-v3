@@ -16,13 +16,9 @@ const filterValidConfig = (config: Record<string, any>): Partial<Config> => {
 
   for (let key in config) {
     if (validKeys.includes(key)) {
-      console.log(key)
       validConfig[key] = config[key]
     }
   }
-
-  console.log('validConfig')
-  console.log(validConfig)
 
   return validConfig
 }
