@@ -19,15 +19,25 @@ const AppRoutes:FC = (): JSX.Element => {
 
   const historyPush = (path: string) => history.push(path + history.location.search);
 
+  const routesData = routes()
+
+  const currentRouteData = {
+    initLoader: true,
+    ...routesData.find((val) => val.path === window.location.pathname),
+  }
+
   useEffect(() => {
     if (!isValidPath) {
       historyPush(Paths.LIST_PAYMENT_METHODS)
     }
   }, [])
 
+  console.log('CONFIG from AppRoutes:')
+  console.log(config)
+
   return config ? (
     <Switch>
-      {Object.values(routes().map((val) => (
+      {Object.values(routesData.map((val) => (
         <Route
           key={val.path}
           path={val.path}
@@ -36,7 +46,11 @@ const AppRoutes:FC = (): JSX.Element => {
       )))}
     </Switch>
   )
-  : <Loader />;
+  : (
+    <div>
+      {currentRouteData.initLoader && <Loader />}
+    </div>
+  );
 };
 
 export default AppRoutes;

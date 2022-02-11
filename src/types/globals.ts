@@ -25,7 +25,8 @@ export enum NotInitialCrucialConfig {
   MODE = 'mode',
   COUNTRY = 'country',
   LOCALE = 'locale',
-  CHANNEL_ID = 'channelId'
+  CHANNEL_ID = 'channelId',
+  ALLOW_CANCEL_PENDING_WITHDRAWAL  = 'allowCancelPendingWithdrawal'
 }
 
 export const ConfigKeys = {
@@ -44,10 +45,12 @@ export enum Methods {
   WITHDRAWAL = 'withdrawal'
 }
 
+type StringNumber = string|number
+
 export interface Config {
-  [ConfigKeys.MERCHANT_ID]: number,
-  [ConfigKeys.USER_ID]: string|number,
-  [ConfigKeys.SESSION_ID]: string|number,
+  [ConfigKeys.MERCHANT_ID]: StringNumber,
+  [ConfigKeys.USER_ID]: StringNumber,
+  [ConfigKeys.SESSION_ID]: StringNumber,
   [ConfigKeys.ENVIRONMENT]: Environments,
   [ConfigKeys.METHOD]: Methods,
   [ConfigKeys.COUNTRY]: string,
@@ -56,7 +59,8 @@ export interface Config {
   [ConfigKeys.CONTAINER_HEIGHT]: string,
   [ConfigKeys.MODE]: Mode,
   [ConfigKeys.FETCH_CONFIG]: boolean,
-  [ConfigKeys.CHANNEL_ID]: string|null
+  [ConfigKeys.CHANNEL_ID]: string|null,
+  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: boolean
 }
 
 export const initialConfig: Config = {
@@ -71,5 +75,6 @@ export const initialConfig: Config = {
   [ConfigKeys.CONTAINER_HEIGHT]: '100%',
   [ConfigKeys.MODE]: Mode.GAMBLING,
   [ConfigKeys.FETCH_CONFIG]: false,
-  [ConfigKeys.CHANNEL_ID]: null
+  [ConfigKeys.CHANNEL_ID]: null,
+  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false
 }
