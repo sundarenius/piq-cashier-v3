@@ -79,3 +79,10 @@ export const initialConfig: Config = {
   [ConfigKeys.CHANNEL_ID]: null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false
 }
+
+export enum TxDateRanges {
+  TODAY = 0,
+  YESTERDAY = 1,
+  LAST_WEEK = 10,
+  LAST_MONTH = 31
+}

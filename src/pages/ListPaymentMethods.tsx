@@ -5,7 +5,7 @@ interface Props {}
 
 const ListPaymentMethods:FC<Props> = (): JSX.Element => {
   const { t } = useTranslation();
-  const txt = t('Citadel');
+  const txt = t('payment_methods');
   return (
     <h1>
       {txt}

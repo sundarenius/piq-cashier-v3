@@ -3,9 +3,11 @@ import {
   initialConfig,
   ConfigKeys,
   NotInitialCrucialConfig,
-  Paths
+  Paths,
+  TxDateRanges
 } from 'types/globals';
 import API from 'service/service'
+import { store } from 'redux/store';
 
 export const urlParamsToObject = () => {
   const urlSearch = location.search.substring(1);
@@ -119,4 +121,13 @@ export const getShouldLoadApp = async ({
   await handleInitialApiRequests(initRequestsCallback);
 
   setShouldLoadApp(getShouldLoadApp)
+}
+
+export const getMinDate = () => {
+  const { txDateRange } = store.getState().context
+  const date = new Date()
+  const fromDate = date.setDate(date.getDate() - txDateRange)
+  const fromDateFormatted = new Date(fromDate).toISOString().substring(0, 10)
+
+  return `${fromDateFormatted}+00:00:00`
 }

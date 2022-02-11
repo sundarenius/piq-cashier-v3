@@ -1,9 +1,8 @@
 import config from 'config';
+import { getMinDate } from 'utils/helpers';
 
 const runByCypress = () => false
 const getChannelId = (channelId) => runByCypress() ? 'Mac' : channelId
-
-const getMinDate = () => ''
 
 const formatAttributes = (queryAttributes) => (queryAttributes && queryAttributes[0] === '&') ? queryAttributes : `&${queryAttributes}`
 
