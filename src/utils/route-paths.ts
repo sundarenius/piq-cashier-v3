@@ -1,8 +1,10 @@
-import { FC } from 'react';
+import type { FC } from 'react';
+import { lazy } from 'react';
 import { Paths } from 'types/globals';
-import ListPaymentMethods from 'pages/ListPaymentMethods';
-import PaymentMethod from 'pages/PaymentMethod';
-import Status from 'pages/Status';
+
+const ListPaymentMethods = lazy(() => import('pages/ListPaymentMethods'));
+const PaymentMethod = lazy(() => import('pages/PaymentMethod'));
+const Status = lazy(() => import('pages/Status'));
 
 interface RouteData {
   path: Paths,

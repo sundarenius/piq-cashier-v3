@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import {
   Switch,
   Route,
@@ -8,7 +8,7 @@ import {
 import { useAppSelector } from 'redux/redux-hooks';
 import { routes } from 'utils/route-paths';
 import { Paths } from 'types/globals';
-import Loader from 'components/Loader';
+import InitLoader from 'components/InitLoader';
 
 const paths: string[] = Object.values(Paths)
 const isValidPath: boolean = paths.includes(window.location.pathname)
@@ -41,14 +41,14 @@ const AppRoutes:FC = (): JSX.Element => {
         <Route
           key={val.path}
           path={val.path}
-          component={val.cmpnt}
+          render={(props) => <Suspense fallback={val.initLoader ? <h1>Loading ...</h1> : ''}><val.cmpnt /></Suspense>}
         />
       )))}
     </Switch>
   )
   : (
     <>
-      {currentRouteData.initLoader && <Loader />}
+      {currentRouteData.initLoader && <InitLoader />}
     </>
   );
 };

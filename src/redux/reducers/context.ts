@@ -8,11 +8,13 @@ import {
 interface InitialState {
   config: null|Partial<Config>, // will contain all
   defaultConfig: null|Partial<Config>, // will contain all
+  paymentMethods: any
 }
 
 const initialState: InitialState = {
   config: null,
-  defaultConfig: null
+  defaultConfig: null,
+  paymentMethods: null
 };
 
 export const contextSlice = createSlice({
