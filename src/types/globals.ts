@@ -79,10 +79,3 @@ export const initialConfig: Config = {
   [ConfigKeys.CHANNEL_ID]: null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false
 }
-
-
-export enum InitRequests {
-  PAYMENT_METHODS = 'payment methods',
-  TRANSLATIONS = 'translations',
-  TRANSACTIONS = 'transactions',
-}

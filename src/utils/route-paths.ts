@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { lazy } from 'react';
-import { Paths, InitRequests } from 'types/globals';
+import { Paths } from 'types/globals';
 
 const ListPaymentMethods = lazy(() => import('pages/ListPaymentMethods'));
 const PaymentMethod = lazy(() => import('pages/PaymentMethod'));
@@ -11,22 +11,20 @@ interface RouteData {
   path: Paths,
   cmpnt: FC,
   initLoader?: boolean,
-  initRequests: InitRequests[]
+  initRequests: (params: any) => void
 }
 
-export const standardInitRequests = [
-  InitRequests.PAYMENT_METHODS,
-  InitRequests.TRANSLATIONS
-]
+export const standardInitRequests = async ({config, dispatch, contextActions}) => {
+  return 'heh'
+}
 
-const transactions = [
-  InitRequests.TRANSLATIONS,
-  InitRequests.TRANSACTIONS
-]
+const statusInitRequests = async ({config, dispatch, contextActions}) => {
+  return 'heh'
+}
 
-const status = [
-  InitRequests.TRANSLATIONS,
-]
+const transactionsInitRequests = async ({config, dispatch, contextActions}) => {
+  return 'heh'
+}
 
 export const routes = (): RouteData[] => ([
   {
@@ -43,11 +41,11 @@ export const routes = (): RouteData[] => ([
     path: Paths.STATUS,
     cmpnt: Status,
     initLoader: false,
-    initRequests: status
+    initRequests: statusInitRequests
   },
   {
     path: Paths.TRANSACTIONS,
     cmpnt: Transactions,
-    initRequests: transactions
+    initRequests: transactionsInitRequests
   }
 ]);

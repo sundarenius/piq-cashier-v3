@@ -90,27 +90,33 @@ const handleInitRoute = (config, historyPush) => {
   }
 }
 
-const handleInitialApiRequests = async (initRequests, dispatch, contextActions) => {
+const handleInitialApiRequests = async (initRequestsCallback) => {
   // Handle all API requests and add to store
+  await initRequestsCallback()
   return true;
 }
 
-export const getShouldLoadApp = async (
+export const getShouldLoadApp = async ({
   setShouldLoadApp,
   config,
   currentRouteData,
   historyPush,
   dispatch,
   contextActions
-) => {
+}) => {
   const getShouldLoadApp = Boolean(config)
 
   console.log(config)
-  console.log(currentRouteData)
 
   handleInitRoute(config, historyPush)
 
-  await handleInitialApiRequests(currentRouteData.initRequests, dispatch, contextActions);
+  const initRequestsCallback = async () => await currentRouteData.initRequests({
+    config,
+    dispatch,
+    contextActions
+  })
+
+  await handleInitialApiRequests(initRequestsCallback);
 
   await new Promise(res => { setTimeout(() => {
     res(null)

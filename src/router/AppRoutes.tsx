@@ -33,14 +33,14 @@ const AppRoutes:FC = (): JSX.Element => {
 
   useEffect(() => {
     if (!shouldLoadApp) {
-      getShouldLoadApp(
+      getShouldLoadApp({
         setShouldLoadApp,
         config,
         currentRouteData,
         historyPush,
         dispatch,
         contextActions
-      )
+      })
     }
   }, [config, shouldLoadApp])
 
