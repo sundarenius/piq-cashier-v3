@@ -14,19 +14,22 @@ const App:FC<Props> = (): JSX.Element => {
   const defaultConfig = useAppSelector(({ context }) => context.defaultConfig)
 
   const widthAndHeight = {
-    width: defaultConfig.containerWidth,
-    height: defaultConfig.container
+    width: defaultConfig ? defaultConfig.containerWidth : '',
+    height: defaultConfig ? defaultConfig.containerHeight : '',
   }
+  
 
   useEffect(() => {
     setInitialConfigs(dispatch, contextActions);
   }, [dispatch])
     
   return (
-    <div style={widthAndHeight} id="cashier-container">
+    <div id="cashier-container">
       <Router>
     
-        <AppRoutes />
+        {defaultConfig && (
+          <div style={widthAndHeight}><AppRoutes /></div>
+        )}
     
       </Router>
     </div>

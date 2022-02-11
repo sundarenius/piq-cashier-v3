@@ -22,9 +22,6 @@ const AppRoutes:FC = (): JSX.Element => {
     historyPush(Paths.LIST_PAYMENT_METHODS)
   }
 
-  console.log('config:')
-  console.log(config)
-
   return config ? (
     <Switch>
       {Object.values(routes().map((val) => (

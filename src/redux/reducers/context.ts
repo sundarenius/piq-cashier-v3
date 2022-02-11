@@ -1,34 +1,35 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { setInitialConfigs } from 'utils/helpers';
+import {
+  Config,
+  Mode
+} from 'types/globals';
 
 interface InitialState {
-  config: any,
-  defaultConfig: any,
+  config: null|Partial<Config>, // will contain all
+  defaultConfig: null|Partial<Config>, // will contain all
 }
 
 const initialState: InitialState = {
   config: null,
-  defaultConfig: {
-    containerWidth: '600px',
-    containerHeight: '600px',
-  }
+  defaultConfig: null
 };
 
 export const contextSlice = createSlice({
   name: 'Context',
   initialState,
   reducers: {
-    setConfig: (state, action: PayloadAction<any>) => {
+    setConfig: (state, action: PayloadAction<Partial<Config>>) => {
       state.config = {
+        ...state.defaultConfig && state.defaultConfig,
+        ...state.config && state.config,
         ...action.payload,
-        ...state.defaultConfig
       };
     },
-    setDefaultConfig: (state, action: PayloadAction<any>) => {
-      state.config = {
+    setDefaultConfig: (state, action: PayloadAction<Partial<Config>>) => {
+      state.defaultConfig = {
+        ...state.defaultConfig && state.defaultConfig,
         ...action.payload,
-        ...state.defaultConfig
       };
     },
   },
