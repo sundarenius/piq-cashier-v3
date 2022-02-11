@@ -85,5 +85,4 @@ export enum InitRequests {
   PAYMENT_METHODS = 'payment methods',
   TRANSLATIONS = 'translations',
   TRANSACTIONS = 'transactions',
-  FETCH_CONFIG = 'fetch config'
 }

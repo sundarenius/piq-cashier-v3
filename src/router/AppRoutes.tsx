@@ -9,16 +9,14 @@ import {
   Route,
   useHistory,
 } from 'react-router-dom';
-import { useAppSelector } from 'redux/redux-hooks';
+import { useAppSelector, useAppDispatch } from 'redux/redux-hooks';
 import { routes, standardInitRequests } from 'utils/route-paths';
-import { Paths } from 'types/globals';
 import InitLoader from 'components/InitLoader';
 import { getShouldLoadApp } from 'utils/helpers';
-
-const paths: string[] = Object.values(Paths)
-const isValidPath: boolean = paths.includes(window.location.pathname)
+import { contextActions } from 'redux/actions'
 
 const AppRoutes:FC = (): JSX.Element => {
+  const dispatch = useAppDispatch()
   const history:any = useHistory();
   const config = useAppSelector(({ context }) => context.config);
   const [shouldLoadApp, setShouldLoadApp] = useState(false);
@@ -34,16 +32,17 @@ const AppRoutes:FC = (): JSX.Element => {
   }
 
   useEffect(() => {
-    if (!isValidPath) {
-      historyPush(Paths.LIST_PAYMENT_METHODS)
-    }
-  }, [])
-
-  useEffect(() => {
     if (!shouldLoadApp) {
-      getShouldLoadApp(setShouldLoadApp, config, currentRouteData)
+      getShouldLoadApp(
+        setShouldLoadApp,
+        config,
+        currentRouteData,
+        historyPush,
+        dispatch,
+        contextActions
+      )
     }
-  }, [config])
+  }, [config, shouldLoadApp])
 
   return shouldLoadApp ? (
     <Switch>

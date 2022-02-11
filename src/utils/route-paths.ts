@@ -16,18 +16,15 @@ interface RouteData {
 
 export const standardInitRequests = [
   InitRequests.PAYMENT_METHODS,
-  InitRequests.FETCH_CONFIG,
   InitRequests.TRANSLATIONS
 ]
 
 const transactions = [
-  InitRequests.FETCH_CONFIG,
   InitRequests.TRANSLATIONS,
   InitRequests.TRANSACTIONS
 ]
 
 const status = [
-  InitRequests.FETCH_CONFIG,
   InitRequests.TRANSLATIONS,
 ]
 

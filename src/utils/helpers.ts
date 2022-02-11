@@ -2,7 +2,8 @@ import {
   Config,
   initialConfig,
   ConfigKeys,
-  NotInitialCrucialConfig
+  NotInitialCrucialConfig,
+  Paths
 } from 'types/globals';
 import API from 'service/service'
 
@@ -79,9 +80,41 @@ export const setInitialConfigs = async (dispatch, contextActions) => {
 
 };
 
-export const getShouldLoadApp = async (setShouldLoadApp, config, currentRouteData) => {
+const handleInitRoute = (config, historyPush) => {
+  const paths: string[] = Object.values(Paths)
+  const isValidPath: boolean = paths.includes(window.location.pathname)
+
+  // Handle initial route here make this better and look for configs and make a switch
+  if (!isValidPath) {
+    historyPush(Paths.LIST_PAYMENT_METHODS)
+  }
+}
+
+const handleInitialApiRequests = async (initRequests, dispatch, contextActions) => {
+  // Handle all API requests and add to store
+  return true;
+}
+
+export const getShouldLoadApp = async (
+  setShouldLoadApp,
+  config,
+  currentRouteData,
+  historyPush,
+  dispatch,
+  contextActions
+) => {
   const getShouldLoadApp = Boolean(config)
+
   console.log(config)
   console.log(currentRouteData)
+
+  handleInitRoute(config, historyPush)
+
+  await handleInitialApiRequests(currentRouteData.initRequests, dispatch, contextActions);
+
+  await new Promise(res => { setTimeout(() => {
+    res(null)
+  }, 1500); })
+
   setShouldLoadApp(getShouldLoadApp)
 }
