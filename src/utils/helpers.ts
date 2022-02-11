@@ -78,3 +78,10 @@ export const setInitialConfigs = async (dispatch, contextActions) => {
   }
 
 };
+
+export const getShouldLoadApp = async (setShouldLoadApp, config, currentRouteData) => {
+  const getShouldLoadApp = Boolean(config)
+  console.log(config)
+  console.log(currentRouteData)
+  setShouldLoadApp(getShouldLoadApp)
+}
