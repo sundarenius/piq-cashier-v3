@@ -2,10 +2,13 @@ import { Environments } from 'types/globals';
 
 const config = {
   [Environments.PRODUCTION]: {
-    apiEndpoint: 'https://someapp-rajraj-heroku.com',
+    apiEndpoint: 'https://api.paymentiq.io',
+  },
+  [Environments.TEST]: {
+    apiEndpoint: 'https://test-api.paymentiq.io',
   },
   [Environments.DEVELOPMENT]: {
-    apiEndpoint: 'http://localhost:3030',
+    apiEndpoint: 'https://test-api.paymentiq.io',
   },
 };
 

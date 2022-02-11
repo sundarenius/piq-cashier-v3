@@ -1,8 +1,10 @@
 import {
   Config,
   initialConfig,
-  ConfigKeys
+  ConfigKeys,
+  NotInitialCrucialConfig
 } from 'types/globals';
+import API from 'service/service'
 
 export const urlParamsToObject = () => {
   const urlSearch = location.search.substring(1);
@@ -10,9 +12,9 @@ export const urlParamsToObject = () => {
   return params;
 }
 
-const filterValidConfig = (config: Record<string, any>): Partial<Config> => {
+const filterValidConfig = (config: Record<string, any>, filterBy: string[]): Partial<Config> => {
   const validConfig: Partial<Config> = {}
-  const validKeys: string[] = Object.values(ConfigKeys)
+  const validKeys: string[] = filterBy
 
   for (let key in config) {
     if (validKeys.includes(key)) {
@@ -23,8 +25,40 @@ const filterValidConfig = (config: Record<string, any>): Partial<Config> => {
   return validConfig
 }
 
+const getFetchConfig = async (configParameter: Config): Promise<{ config: Partial<Config>, css: string }> => {
+  const {
+    merchantId,
+    userId,
+    sessionId,
+    method,
+    locale,
+    channelId,
+    country,
+  } = configParameter
+  const fetchConfig = await API.fetchConfigService({
+    merchantId,
+    userId,
+    sessionId,
+    method,
+    locale,
+    channelId,
+    country,
+    queryAttributes: ''
+  })
+
+  const config = JSON.parse(fetchConfig.config)
+  const css = fetchConfig.css
+
+  const validConfig = filterValidConfig(config, Object.values(NotInitialCrucialConfig))
+
+  return {
+    config: validConfig,
+    css
+  }
+}
+
 export const setInitialConfigs = async (dispatch, contextActions) => {
-  const validConfig = filterValidConfig(urlParamsToObject())
+  const validConfig = filterValidConfig(urlParamsToObject(), Object.values(ConfigKeys))
 
   const config: Config = {
     ...initialConfig,
@@ -34,9 +68,11 @@ export const setInitialConfigs = async (dispatch, contextActions) => {
   dispatch(contextActions.setDefaultConfig(config))
 
   if (config[ConfigKeys.FETCH_CONFIG]) {
-    await new Promise((resolve) => { setTimeout(() => { resolve(null) }, 1000) })
-    // Should be a async call to fetchConfig and only take 'NotInitialCrucialConfig' configs
-    dispatch(contextActions.setConfig(config))
+    const {
+      config: fetchConfig,
+      css,
+    } = await getFetchConfig(config)
+    dispatch(contextActions.setConfig(fetchConfig))    
   } else {
     dispatch(contextActions.setConfig(config))
   }
