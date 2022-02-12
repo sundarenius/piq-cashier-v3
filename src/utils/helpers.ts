@@ -14,21 +14,38 @@ export const urlParamsToObject = () => {
   return params;
 };
 
-const filterValidConfig = (config: Record<string, any>, filterBy: string[]): Partial<Config> => {
+const filterValidConfig = (
+  config: Record<string, any>,
+  filterBy: string[],
+): { validConfig: Partial<Config>, inValidConfig: Record<any, any>} => {
   const validConfig: Partial<Config> = {};
+  const inValidConfig: Record<any, any> = {};
   const validKeys: string[] = filterBy;
   const configKeys: any[] = Object.keys(config);
 
   configKeys.forEach((key) => {
     if (validKeys.includes(key)) {
       validConfig[key] = config[key];
+    } else {
+      inValidConfig[key] = config[key];
     }
   });
 
-  return validConfig;
+  return {
+    validConfig,
+    inValidConfig,
+  };
 };
 
-const getFetchConfig = async (configParameter: Config): Promise<{ config: Partial<Config>, css: string }> => {
+interface GetFetchConfigReturnConfig extends Partial<Config> {
+  attributes?: Record<string, any>,
+  theme?: Record<any, any>
+}
+interface GetFetchConfigReturn {
+  config: GetFetchConfigReturnConfig,
+  css: string
+}
+const getFetchConfig = async (configParameter: Config): Promise<GetFetchConfigReturn> => {
   const {
     merchantId,
     userId,
@@ -52,7 +69,7 @@ const getFetchConfig = async (configParameter: Config): Promise<{ config: Partia
   const config = JSON.parse(fetchConfig.config);
   const { css } = fetchConfig;
 
-  const validConfig = filterValidConfig(config, Object.values(NotInitialCrucialConfig));
+  const { validConfig } = filterValidConfig(config, Object.values(NotInitialCrucialConfig));
 
   return {
     config: validConfig,
@@ -60,14 +77,66 @@ const getFetchConfig = async (configParameter: Config): Promise<{ config: Partia
   };
 };
 
-export const setInitialConfigs = async (dispatch, contextActions) => {
-  const validConfig = filterValidConfig(urlParamsToObject(), Object.values(ConfigKeys));
+const formatAttributesAndThemeConfigs = (configs): { attributes: Record<any, any>, themeConfigs: Record<string, any>} => {
+  const themeConfigs: Record<string, any> = {};
+  const attributes: Record<any, any> = {};
+  const configEntries = Object.entries(configs);
+  const configEntriesAsString: string = configEntries.flat().join(' ');
+
+  // no need to loop if there is none of these
+  if (!configEntriesAsString.includes('theme_') && !configEntriesAsString.includes('attributes.')) {
+    return {
+      attributes,
+      themeConfigs,
+    };
+  }
+
+  configEntries.forEach((val) => {
+    const key: string = val[0];
+    if (key.includes('theme_')) {
+      const themeSplit = key.split('_').filter((v, i) => i > 0);
+      const outerKey = themeSplit[0];
+      const innerKey = themeSplit[1];
+      if (!themeConfigs[outerKey]) {
+        themeConfigs[outerKey] = {};
+      }
+
+      themeConfigs[outerKey][innerKey] = decodeURIComponent(val[1] as string);
+    }
+    if (key.includes('attributes.')) {
+      const attributesSplit = key.split('.').filter((v, i) => i > 0);
+      const attributeKey = attributesSplit[0];
+      const value = val[1];
+      attributes[attributeKey] = value;
+    }
+  });
+
+  const data = {
+    themeConfigs,
+    attributes,
+  };
+
+  console.log(data);
+
+  return data;
+};
+
+export const setInitialConfigs = async (dispatch, contextActions, themeActions) => {
+  const urlParams = urlParamsToObject();
+  const { validConfig, inValidConfig } = filterValidConfig(urlParams, Object.values(ConfigKeys));
+  const {
+    themeConfigs,
+    attributes,
+  } = formatAttributesAndThemeConfigs(inValidConfig);
 
   const config: Config = {
     ...initialConfig,
     ...validConfig,
   };
 
+  dispatch(themeActions.setTheme(themeConfigs));
+  dispatch(contextActions.setAttributes(attributes));
+  // The app reacts and loads once setDefaultConfig is set, then it will wait for config:
   dispatch(contextActions.setDefaultConfig(config));
 
   if (config[ConfigKeys.FETCH_CONFIG]) {
@@ -76,7 +145,11 @@ export const setInitialConfigs = async (dispatch, contextActions) => {
       css = false,
     } = await getFetchConfig(config);
     if (css) addCssToHead(css, 'piq-fetch-config-css');
-    dispatch(contextActions.setConfig(fetchConfig));
+
+    if (fetchConfig.attributes) dispatch(contextActions.setAttributes(fetchConfig.attributes));
+    if (fetchConfig.theme) dispatch(contextActions.setTheme(fetchConfig.theme));
+    const { validConfig: validFetchConfig } = filterValidConfig(fetchConfig, Object.values(ConfigKeys));
+    dispatch(contextActions.setConfig(validFetchConfig));
   } else {
     dispatch(contextActions.setConfig(config));
   }
@@ -139,4 +212,10 @@ export const addCssToHead = (css: string, id: string) => {
   if (head) {
     head.innerHTML += `<style ${id ? `id=${id}` : ''}>${cleanedCss}</style>`;
   }
+};
+
+export const isUserMobile = () => {
+  const navigatorData: any = window.navigator;
+  const check = navigatorData.userAgentData.mobile;
+  return check;
 };

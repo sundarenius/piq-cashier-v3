@@ -11,6 +11,7 @@ interface InitialState {
   paymentMethods: any,
   transactionsHistory: any,
   txDateRange: TxDateRanges
+  attributes: Record<string, any>,
 }
 
 const initialState: InitialState = {
@@ -19,6 +20,7 @@ const initialState: InitialState = {
   paymentMethods: null,
   transactionsHistory: null,
   txDateRange: TxDateRanges.LAST_WEEK,
+  attributes: {},
 };
 
 export const contextSlice = createSlice({
@@ -46,6 +48,9 @@ export const contextSlice = createSlice({
     },
     setTxDateRange: (state, action: PayloadAction<any>) => {
       state.txDateRange = action.payload;
+    },
+    setAttributes: (state, action: PayloadAction<Record<any, any>>) => {
+      state.attributes = action.payload;
     },
   },
 });

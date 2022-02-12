@@ -4,7 +4,7 @@ import AppRoutes from 'router/AppRoutes';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from 'redux/redux-hooks';
 import { setInitialConfigs } from 'utils/helpers';
-import { contextActions } from 'redux/actions';
+import { contextActions, themeActions } from 'redux/actions';
 import './styles/App.scss';
 
 interface Props {}
@@ -19,7 +19,7 @@ const App:FC<Props> = (): JSX.Element => {
   };
 
   useEffect(() => {
-    setInitialConfigs(dispatch, contextActions);
+    setInitialConfigs(dispatch, contextActions, themeActions);
   }, [dispatch]);
 
   return (
