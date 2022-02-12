@@ -33,7 +33,8 @@ export enum NotInitialCrucialConfig {
   LOCALE = 'locale',
   CHANNEL_ID = 'channelId',
   ALLOW_CANCEL_PENDING_WITHDRAWAL = 'allowCancelPendingWithdrawal',
-  AUTO_OPEN_FIRST_PAYMENT_METHOD = 'autoOpenFirstPaymentMethod'
+  AUTO_OPEN_FIRST_PAYMENT_METHOD = 'autoOpenFirstPaymentMethod',
+  LIST_TYPE = 'listType'
 }
 
 export const ConfigKeys = {
@@ -52,6 +53,11 @@ export enum Methods {
   WITHDRAWAL = 'withdrawal'
 }
 
+export enum ListTypes {
+  LIST = 'list',
+  GRID = 'grid'
+}
+
 type StringNumber = string|number
 
 export interface Config {
@@ -68,7 +74,8 @@ export interface Config {
   [ConfigKeys.FETCH_CONFIG]: boolean,
   [ConfigKeys.CHANNEL_ID]: string|null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: boolean,
-  [ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]: boolean
+  [ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]: boolean,
+  [ConfigKeys.LIST_TYPE]: ListTypes
 }
 
 export const initialConfig: Config = {
@@ -86,6 +93,7 @@ export const initialConfig: Config = {
   [ConfigKeys.CHANNEL_ID]: null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false,
   [ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]: true,
+  [ConfigKeys.LIST_TYPE]: ListTypes.LIST,
 };
 
 export enum TxDateRanges {
