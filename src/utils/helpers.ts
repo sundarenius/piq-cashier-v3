@@ -234,3 +234,11 @@ export const getPaymentMethodName = (method: any, t: any) => {
     || (providerType && t(providerType.toLowerCase()))
     || (type && t(type.toLowerCase()));
 };
+
+export const getPaymentMethodSubheader = (method: any, t: any) => {
+  const { service, providerType, type } = method;
+  const getSubheader = (str: string) => t(`${str.toLowerCase()}_subheader`);
+  return (service && getSubheader(service))
+    || (providerType && getSubheader(providerType))
+    || (type && getSubheader(type));
+};

@@ -5,7 +5,10 @@ import {
   Header,
 } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
-import { getPaymentMethodName } from 'utils/helpers';
+import {
+  getPaymentMethodName,
+  getPaymentMethodSubheader,
+} from 'utils/helpers';
 
 interface Props {
   paymentMethod: any
@@ -31,12 +34,12 @@ const ListHeader:FC<Props> = ({ paymentMethod }): JSX.Element => {
   return (
     <Header
       style={style}
-      className="container"
+      className="container list-header-container"
       onClick={onPaymentClick}
       onKeyPress={onPaymentClick}
-      id="list-header-container"
     >
-      <h3>{getPaymentMethodName(paymentMethod, t)}</h3>
+      <h3 id="payment-name">{getPaymentMethodName(paymentMethod, t)}</h3>
+      <p id="payment-subheader">{getPaymentMethodSubheader(paymentMethod, t)}</p>
     </Header>
   );
 };

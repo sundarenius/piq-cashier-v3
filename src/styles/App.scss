@@ -25,6 +25,10 @@
   padding: 15px;
 }
 
+#list-payment-methods-container .payment-method:not(.active):hover {
+  filter: contrast(0.5);
+}
+
 // *** margins and paddings START ***
 $one: 5px!important;
 $oneY: 5px 0!important;
