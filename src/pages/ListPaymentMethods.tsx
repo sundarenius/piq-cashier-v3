@@ -3,7 +3,6 @@ import type { PageProps } from 'types/globals';
 import { ListTypes } from 'types/globals';
 import PaymentMethodDetails from 'components/PaymentMethodDetails';
 import { useAppSelector } from 'redux/redux-hooks';
-import { paymentMethodsAsConfig } from 'utils/helpers';
 
 const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
   const paymentMethods = useAppSelector(({ context }) => context.paymentMethods);
@@ -27,11 +26,9 @@ const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
     border: config?.listType === ListTypes.LIST ? '1px solid lightgrey' : '',
   };
 
-  const paymentMethodsConfig = paymentMethodsAsConfig(paymentMethods, config);
-
   return (
     <div id={id}>
-      {paymentMethodsConfig.map((method: any) => (
+      {paymentMethods.map((method: any) => (
         <div
           key={method.uuid}
           style={style}

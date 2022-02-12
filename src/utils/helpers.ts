@@ -263,7 +263,7 @@ export const formatPaymentMethods = (paymentMethods: any, config: Config) => {
   console.log('config from formatPaymentMethods');
   console.log(config);
 
-  return paymentMethodsData;
+  return paymentMethodsAsConfig(paymentMethodsData, config);
 };
 
 const sortListFirtsPaymentMethods = (paymentMethods: any) => {
