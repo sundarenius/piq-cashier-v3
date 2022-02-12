@@ -1,10 +1,7 @@
 import type { FC } from 'react';
+import type { PageProps } from 'types/globals';
 
-interface Props {
-  id: string
-}
-
-const PaymentMethod:FC<Props> = ({ id }): JSX.Element => {
+const PaymentMethod:FC<PageProps> = ({ id }): JSX.Element => {
   const txt = 'PaymentMethod page';
   return (
     <div id={id}>

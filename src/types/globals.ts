@@ -11,6 +11,11 @@ export enum Environments {
   DEVELOPMENT = 'development',
 }
 
+export interface PageProps {
+  id: string,
+  path: Paths
+}
+
 enum InitialCrucialConfig {
   MERCHANT_ID = 'merchantId',
   USER_ID = 'userId',
@@ -27,7 +32,8 @@ export enum NotInitialCrucialConfig {
   COUNTRY = 'country',
   LOCALE = 'locale',
   CHANNEL_ID = 'channelId',
-  ALLOW_CANCEL_PENDING_WITHDRAWAL = 'allowCancelPendingWithdrawal'
+  ALLOW_CANCEL_PENDING_WITHDRAWAL = 'allowCancelPendingWithdrawal',
+  AUTO_OPEN_FIRST_PAYMENT_METHOD = 'autoOpenFirstPaymentMethod'
 }
 
 export const ConfigKeys = {
@@ -61,7 +67,8 @@ export interface Config {
   [ConfigKeys.MODE]: Mode,
   [ConfigKeys.FETCH_CONFIG]: boolean,
   [ConfigKeys.CHANNEL_ID]: string|null,
-  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: boolean
+  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: boolean,
+  [ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]: boolean
 }
 
 export const initialConfig: Config = {
@@ -78,6 +85,7 @@ export const initialConfig: Config = {
   [ConfigKeys.FETCH_CONFIG]: false,
   [ConfigKeys.CHANNEL_ID]: null,
   [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false,
+  [ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]: true,
 };
 
 export enum TxDateRanges {

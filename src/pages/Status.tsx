@@ -1,10 +1,7 @@
 import type { FC } from 'react';
+import type { PageProps } from 'types/globals';
 
-interface Props {
-  id: string
-}
-
-const Status:FC<Props> = ({ id }): JSX.Element => {
+const Status:FC<PageProps> = ({ id }): JSX.Element => {
   const txt = 'Status page';
   return (
     <div id={id}>

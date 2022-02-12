@@ -15,6 +15,7 @@ import { routes, standardInitRequests } from 'utils/route-paths';
 import InitLoader from 'components/InitLoader';
 import { getShouldLoadApp } from 'utils/helpers';
 import { contextActions } from 'redux/actions';
+import type { PageProps } from 'types/globals';
 
 const AppRoutes:FC = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -50,7 +51,7 @@ const AppRoutes:FC = (): JSX.Element => {
         <Route
           key={path}
           path={path}
-          render={() => <RouteComponent Cmpnt={cmpnt} initLoader={initLoader} id={id} />}
+          render={() => <RouteComponent path={path} cmpnt={cmpnt} initLoader={initLoader} id={id} />}
         />
       )))}
     </Switch>
@@ -64,13 +65,12 @@ const AppRoutes:FC = (): JSX.Element => {
 
 export default AppRoutes;
 
-interface RouteComponentProps {
+interface RouteComponentProps extends PageProps {
   initLoader: boolean,
-  Cmpnt: FC<{ id: string }>,
-  id: string
+  cmpnt: FC<PageProps>
 }
-const RouteComponent: FC<RouteComponentProps> = ({ initLoader, Cmpnt, id }) => (
+const RouteComponent: FC<RouteComponentProps> = ({ initLoader, cmpnt: Cmpnt, id, path }) => (
   <Suspense fallback={initLoader ? <h1>Loading ...</h1> : ''}>
-    <Cmpnt id={id} />
+    <Cmpnt path={path} id={id} />
   </Suspense>
 );

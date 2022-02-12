@@ -5,9 +5,9 @@ interface Props {}
 const SelectAmount:FC<Props> = (): JSX.Element => {
   const txt = 'SelectAmount page';
   return (
-    <h1>
-      {txt}
-    </h1>
+    <div id="select-amount-container">
+      <h3>{txt}</h3>
+    </div>
   );
 };
 

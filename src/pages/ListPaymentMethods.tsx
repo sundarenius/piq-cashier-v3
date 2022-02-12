@@ -1,18 +1,34 @@
 import type { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import SelectAmount from 'components/SelectAmount';
+import type { PageProps } from 'types/globals';
+// import { useTranslation } from 'react-i18next';
+import ListHeader from 'components/ListHeader';
+import PaymentMethodDetails from 'components/PaymentMethodDetails';
+import { useAppSelector } from 'redux/redux-hooks';
 
-interface Props {
-  id: string
-}
+const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
+  const paymentMethods = useAppSelector(({ context }) => context.paymentMethods);
+  const activePaymentMethod = useAppSelector(({ context }) => context.activePaymentMethod);
 
-const ListPaymentMethods:FC<Props> = ({ id }): JSX.Element => {
-  const { t } = useTranslation();
-  const txt = t('payment_methods');
+  // const { t } = useTranslation();
+  // const txt = t('payment_methods');
+
+  console.log(paymentMethods);
+
   return (
     <div id={id}>
-      <p>{txt}</p>
-      <SelectAmount />
+      {paymentMethods.map((method: any) => (
+        <div
+          key={method.txType}
+          id="payment-method"
+          style={{ border: '1px solid black', margin: '1px' }}
+        >
+
+          <ListHeader paymentMethod={method} />
+
+          {method.uuid === activePaymentMethod.uuid && <PaymentMethodDetails />}
+
+        </div>
+      ))}
     </div>
   );
 };

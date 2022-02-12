@@ -9,6 +9,7 @@ interface InitialState {
   config: null|Partial<Config>, // will contain all
   defaultConfig: null|Partial<Config>, // will contain all
   paymentMethods: any,
+  activePaymentMethod: any,
   transactionsHistory: any,
   txDateRange: TxDateRanges
   attributes: Record<string, any>,
@@ -18,6 +19,7 @@ const initialState: InitialState = {
   config: null,
   defaultConfig: null,
   paymentMethods: null,
+  activePaymentMethod: null,
   transactionsHistory: null,
   txDateRange: TxDateRanges.LAST_WEEK,
   attributes: {},
@@ -51,6 +53,9 @@ export const contextSlice = createSlice({
     },
     setAttributes: (state, action: PayloadAction<Record<any, any>>) => {
       state.attributes = action.payload;
+    },
+    setActivePaymentMethod: (state, action: PayloadAction<Record<any, any>>) => {
+      state.activePaymentMethod = action.payload;
     },
   },
 });

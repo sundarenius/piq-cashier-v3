@@ -1,8 +1,10 @@
 import type { FC } from 'react';
 import { lazy } from 'react';
-import { Paths } from 'types/globals';
+import { Paths, ConfigKeys } from 'types/globals';
+import type { PageProps } from 'types/globals';
 import API from 'service/service';
 import { initTranslations } from 'utils/translations';
+import { v4 as uuidv4 } from 'uuid';
 
 const ListPaymentMethods = lazy(() => import('pages/ListPaymentMethods'));
 const PaymentMethod = lazy(() => import('pages/PaymentMethod'));
@@ -11,7 +13,7 @@ const Transactions = lazy(() => import('pages/Transactions'));
 
 interface RouteData {
   path: Paths,
-  cmpnt: FC<{ id: string }>,
+  cmpnt: FC<PageProps>,
   initLoader?: boolean,
   initRequests: (params: any) => void,
   id: string
@@ -22,7 +24,23 @@ export const standardInitRequests = async ({ config, dispatch, contextActions })
   const translationsRes = API.fetchTranslations(config);
   const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes]);
   initTranslations(translations);
-  dispatch(contextActions.setPaymentMethods(paymentMethods.data));
+  const paymentMethodsData = paymentMethods.data[0].methods.map((method) => {
+    const methodData = {
+      ...method,
+      uuid: uuidv4(),
+    };
+    if (methodData.accounts && methodData.accounts.length > 0) {
+      methodData.accounts.forEach((account) => {
+        account.uuid = uuidv4();
+      });
+    }
+    return methodData;
+  });
+
+  if (config[ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]) {
+    dispatch(contextActions.setActivePaymentMethod(paymentMethodsData[0]));
+  }
+  dispatch(contextActions.setPaymentMethods(paymentMethodsData));
   return true;
 };
 
