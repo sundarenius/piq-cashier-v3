@@ -166,12 +166,6 @@ const handleInitRoute = (config, historyPush) => {
   }
 };
 
-const handleInitialApiRequests = async (initRequestsCallback) => {
-  // Handle all API requests and add to store
-  const res = await initRequestsCallback();
-  return res;
-};
-
 export const getShouldLoadApp = async ({
   setShouldLoadApp,
   config,
@@ -190,7 +184,7 @@ export const getShouldLoadApp = async ({
     contextActions,
   });
 
-  await handleInitialApiRequests(initRequestsCallback);
+  await initRequestsCallback();
 
   setShouldLoadApp(Boolean(config));
 };
