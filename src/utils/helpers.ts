@@ -266,7 +266,7 @@ export const formatPaymentMethods = (paymentMethods: any, config: Config) => {
   return paymentMethodsAsConfig(paymentMethodsData, config);
 };
 
-const sortListFirtsPaymentMethods = (paymentMethods: any) => {
+const sortListFirstPaymentMethods = (paymentMethods: any) => {
   let result: any[] = [];
 
   paymentMethods.forEach((method: any) => {
@@ -290,7 +290,7 @@ export const paymentMethodsAsConfig = (paymentMethods: any, config: Partial<Conf
   switch (showAccounts) {
     default:
     case ShowAccounts.LIST_FIRST:
-      return sortListFirtsPaymentMethods(paymentMethods);
+      return sortListFirstPaymentMethods(paymentMethods);
     case ShowAccounts.LIST_WITH_PM:
       return paymentMethods;
     case ShowAccounts.INLINE:
