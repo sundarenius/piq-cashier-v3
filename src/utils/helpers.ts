@@ -123,6 +123,7 @@ const formatAttributesAndThemeConfigs = (configs): { attributes: Record<any, any
 
 export const setInitialConfigs = async (dispatch, contextActions, themeActions) => {
   const urlParams = urlParamsToObject();
+  // inValidConfig is probably config not belonging to standard config, like theme and attributes
   const { validConfig, inValidConfig } = filterValidConfig(urlParams, Object.values(ConfigKeys));
   const {
     themeConfigs,
