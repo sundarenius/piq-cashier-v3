@@ -94,5 +94,6 @@ module.exports = {
     'react/require-default-props': 'off',
     'react/no-unused-prop-types': 'off',
     'no-console': 'off',
+    'object-curly-newline': 'off'
   },
 };

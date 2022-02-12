@@ -73,8 +73,9 @@ export const setInitialConfigs = async (dispatch, contextActions) => {
   if (config[ConfigKeys.FETCH_CONFIG]) {
     const {
       config: fetchConfig,
-      // css,
+      css = false,
     } = await getFetchConfig(config);
+    if (css) addCssToHead(css, 'piq-fetch-config-css');
     dispatch(contextActions.setConfig(fetchConfig));
   } else {
     dispatch(contextActions.setConfig(config));
@@ -130,4 +131,15 @@ export const getMinDate = () => {
   const fromDateFormatted = new Date(fromDate).toISOString().substring(0, 10);
 
   return `${fromDateFormatted}+00:00:00`;
+};
+
+export const addCssToHead = (css: string, id: string) => {
+  const styleEl: HTMLElement = document.createElement('style');
+  const head: HTMLElement|null = document.querySelector('head');
+  styleEl.id = id;
+  const cleanedCss = css.replace(/null/g, '');
+
+  if (head) {
+    head.innerHTML += `<style ${id ? `id=${id}` : ''}>${cleanedCss}</style>`;
+  }
 };
