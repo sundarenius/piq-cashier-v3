@@ -27,13 +27,13 @@ export enum NotInitialCrucialConfig {
   COUNTRY = 'country',
   LOCALE = 'locale',
   CHANNEL_ID = 'channelId',
-  ALLOW_CANCEL_PENDING_WITHDRAWAL  = 'allowCancelPendingWithdrawal'
+  ALLOW_CANCEL_PENDING_WITHDRAWAL = 'allowCancelPendingWithdrawal'
 }
 
 export const ConfigKeys = {
   ...InitialCrucialConfig,
-  ...NotInitialCrucialConfig
-}
+  ...NotInitialCrucialConfig,
+};
 
 export enum Mode {
   GAMBLING = 'gambling',
@@ -77,8 +77,8 @@ export const initialConfig: Config = {
   [ConfigKeys.MODE]: Mode.GAMBLING,
   [ConfigKeys.FETCH_CONFIG]: false,
   [ConfigKeys.CHANNEL_ID]: null,
-  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false
-}
+  [ConfigKeys.ALLOW_CANCEL_PENDING_WITHDRAWAL]: false,
+};
 
 export enum TxDateRanges {
   TODAY = 0,

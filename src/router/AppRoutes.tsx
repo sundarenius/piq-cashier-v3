@@ -2,7 +2,8 @@ import type { FC } from 'react';
 import {
   useEffect,
   Suspense,
-  useState
+  useState,
+  useMemo,
 } from 'react';
 import {
   Switch,
@@ -13,25 +14,24 @@ import { useAppSelector, useAppDispatch } from 'redux/redux-hooks';
 import { routes, standardInitRequests } from 'utils/route-paths';
 import InitLoader from 'components/InitLoader';
 import { getShouldLoadApp } from 'utils/helpers';
-import { contextActions } from 'redux/actions'
+import { contextActions } from 'redux/actions';
 
 const AppRoutes:FC = (): JSX.Element => {
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
   const history:any = useHistory();
   const config = useAppSelector(({ context }) => context.config);
   const [shouldLoadApp, setShouldLoadApp] = useState(false);
 
-  const historyPush = (path: string) => history.push(path + history.location.search);
+  const routesData = routes();
 
-  const routesData = routes()
-
-  const currentRouteData = {
+  const currentRouteData = useMemo(() => ({
     initLoader: true,
     initRequests: standardInitRequests,
     ...routesData.find((val) => val.path === window.location.pathname),
-  }
+  }), [routesData]);
 
   useEffect(() => {
+    const historyPush = (path: string) => history.push(path + history.location.search);
     if (!shouldLoadApp) {
       getShouldLoadApp({
         setShouldLoadApp,
@@ -39,10 +39,10 @@ const AppRoutes:FC = (): JSX.Element => {
         currentRouteData,
         historyPush,
         dispatch,
-        contextActions
-      })
+        contextActions,
+      });
     }
-  }, [config, shouldLoadApp])
+  }, [config, currentRouteData, dispatch, history, shouldLoadApp]);
 
   return shouldLoadApp ? (
     <Switch>
@@ -50,16 +50,16 @@ const AppRoutes:FC = (): JSX.Element => {
         <Route
           key={val.path}
           path={val.path}
-          render={(props) => <Suspense fallback={val.initLoader ? <h1>Loading ...</h1> : ''}><val.cmpnt /></Suspense>}
+          render={() => <Suspense fallback={val.initLoader ? <h1>Loading ...</h1> : ''}><val.cmpnt /></Suspense>}
         />
       )))}
     </Switch>
   )
-  : (
-    <>
-      {currentRouteData.initLoader && <InitLoader />}
-    </>
-  );
+    : (
+      <>
+        {currentRouteData.initLoader && <InitLoader />}
+      </>
+    );
 };
 
 export default AppRoutes;

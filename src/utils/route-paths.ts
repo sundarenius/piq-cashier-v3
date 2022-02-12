@@ -16,51 +16,51 @@ interface RouteData {
   initRequests: (params: any) => void
 }
 
-export const standardInitRequests = async ({config, dispatch, contextActions}) => {
-  const paymentMethodsRes = API.fetchPaymentMethods(config)
-  const translationsRes = API.fetchTranslations(config)
-  const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes])
-  initTranslations(translations)
-  dispatch(contextActions.setPaymentMethods(paymentMethods.data))
-  return true
-}
+export const standardInitRequests = async ({ config, dispatch, contextActions }) => {
+  const paymentMethodsRes = API.fetchPaymentMethods(config);
+  const translationsRes = API.fetchTranslations(config);
+  const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes]);
+  initTranslations(translations);
+  dispatch(contextActions.setPaymentMethods(paymentMethods.data));
+  return true;
+};
 
-const statusInitRequests = async ({config, dispatch, contextActions}) => {
-  const translationsRes = API.fetchTranslations(config)
-  const [translations] = await Promise.all([translationsRes])
-  initTranslations(translations)
-  return true
-}
+const statusInitRequests = async ({ config }) => {
+  const translationsRes = API.fetchTranslations(config);
+  const [translations] = await Promise.all([translationsRes]);
+  initTranslations(translations);
+  return true;
+};
 
-const transactionsInitRequests = async ({config, dispatch, contextActions}) => {
-  const translationsRes = API.fetchTranslations(config)
-  const transactionsRes = API.fetchTransactionHistory(config)
-  const [translations, transactions] = await Promise.all([translationsRes, transactionsRes])
-  initTranslations(translations)
-  dispatch(contextActions.setTransactionsHistory(transactions))
-  return true
-}
+const transactionsInitRequests = async ({ config, dispatch, contextActions }) => {
+  const translationsRes = API.fetchTranslations(config);
+  const transactionsRes = API.fetchTransactionHistory(config);
+  const [translations, transactions] = await Promise.all([translationsRes, transactionsRes]);
+  initTranslations(translations);
+  dispatch(contextActions.setTransactionsHistory(transactions));
+  return true;
+};
 
 export const routes = (): RouteData[] => ([
   {
     path: Paths.LIST_PAYMENT_METHODS,
     cmpnt: ListPaymentMethods,
-    initRequests: standardInitRequests
+    initRequests: standardInitRequests,
   },
   {
     path: Paths.PAYMENT_METHOD,
     cmpnt: PaymentMethod,
-    initRequests: standardInitRequests
+    initRequests: standardInitRequests,
   },
   {
     path: Paths.STATUS,
     cmpnt: Status,
     initLoader: false,
-    initRequests: statusInitRequests
+    initRequests: statusInitRequests,
   },
   {
     path: Paths.TRANSACTIONS,
     cmpnt: Transactions,
-    initRequests: transactionsInitRequests
-  }
+    initRequests: transactionsInitRequests,
+  },
 ]);

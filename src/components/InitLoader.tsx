@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { Placeholder, Card } from 'semantic-ui-react'
+import { Placeholder, Card } from 'semantic-ui-react';
 
 interface Props {}
 

@@ -1,7 +1,7 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
+import type { Config } from 'types/globals';
 import {
-  Config,
   TxDateRanges,
 } from 'types/globals';
 
@@ -18,7 +18,7 @@ const initialState: InitialState = {
   defaultConfig: null,
   paymentMethods: null,
   transactionsHistory: null,
-  txDateRange: TxDateRanges.LAST_WEEK
+  txDateRange: TxDateRanges.LAST_WEEK,
 };
 
 export const contextSlice = createSlice({
@@ -39,13 +39,13 @@ export const contextSlice = createSlice({
       };
     },
     setPaymentMethods: (state, action: PayloadAction<any>) => {
-      state.paymentMethods = action.payload
+      state.paymentMethods = action.payload;
     },
     setTransactionsHistory: (state, action: PayloadAction<any>) => {
-      state.transactionsHistory = action.payload
+      state.transactionsHistory = action.payload;
     },
     setTxDateRange: (state, action: PayloadAction<any>) => {
-      state.txDateRange = action.payload
+      state.txDateRange = action.payload;
     },
   },
 });

@@ -1,10 +1,12 @@
+/* eslint-disable max-len */
 import config from 'config';
 import { getMinDate } from 'utils/helpers';
 
-const runByCypress = () => false
-const getChannelId = (channelId) => runByCypress() ? 'Mac' : channelId
+const runByCypress = () => false;
+const getChannelId = (channelId) => (runByCypress() ? 'Mac' : channelId);
 
-const formatAttributes = (queryAttributes) => (queryAttributes && queryAttributes[0] === '&') ? queryAttributes : `&${queryAttributes}`
+const formatAttributes = (queryAttributes) =>
+  ((queryAttributes && queryAttributes[0] === '&') ? queryAttributes : `&${queryAttributes}`);
 
 enum MethodTypes {
   GET = 'GET',
@@ -41,32 +43,36 @@ const fetchMethod = async (path, method, payload) => {
   }
 };
 
-
 const api = {
-  fetchConfigService: async ({ merchantId, userId, sessionId, method, locale, channelId, country, queryAttributes = '' }) => {
-    const attributes = formatAttributes(queryAttributes)
-    const path = `paymentiq/api/cashier/config/${merchantId}/${userId}?sessionId=${sessionId}&method=${method}&locale=${locale}&channelId=${getChannelId(channelId)}&market=${country}${attributes}`
+  fetchConfigService: async ({
+    merchantId, userId, sessionId, method, locale, channelId, country, queryAttributes = '',
+  }) => {
+    const attributes = formatAttributes(queryAttributes);
+    const path = `paymentiq/api/cashier/config/${merchantId}/${userId}?sessionId=${sessionId}&method=${method}&locale=${locale}&channelId=${getChannelId(channelId)}&market=${country}${attributes}`;
     const data = await fetchMethod(path, MethodTypes.GET, null);
     return data;
   },
-  fetchPaymentMethods: async ({ merchantId, userId, sessionId, method, locale = 'en_GB', channelId, queryAttributes = '' }) => {
-    const attributes = formatAttributes(queryAttributes)
-    const path = `cashier/${merchantId}/${userId}?locale=${locale}&method=${method}&sessionId=${sessionId}&channelId=${getChannelId(channelId)}${attributes}`
+  fetchPaymentMethods: async ({
+    merchantId, userId, sessionId, method, locale = 'en_GB', channelId, queryAttributes = '',
+  }) => {
+    const attributes = formatAttributes(queryAttributes);
+    const path = `cashier/${merchantId}/${userId}?locale=${locale}&method=${method}&sessionId=${sessionId}&channelId=${getChannelId(channelId)}${attributes}`;
     const data = await fetchMethod(path, MethodTypes.GET, null);
     return data;
   },
-  fetchTransactionHistory: async ({ merchantId, userId, sessionId, queryAttributes = '' }) => {
-    const attributes = formatAttributes(queryAttributes)
-    const path = `user/transaction/${merchantId}/${userId}?sessionId=${sessionId}&minDate=${getMinDate()}${attributes}`
+  fetchTransactionHistory: async ({
+    merchantId, userId, sessionId, queryAttributes = '',
+  }) => {
+    const attributes = formatAttributes(queryAttributes);
+    const path = `user/transaction/${merchantId}/${userId}?sessionId=${sessionId}&minDate=${getMinDate()}${attributes}`;
     const data = await fetchMethod(path, MethodTypes.GET, null);
     return data;
   },
   fetchTranslations: async ({ locale = 'en_GB', merchantId }) => {
-    const path = `resource/translations?locale=${locale}&merchantId=${merchantId}`
+    const path = `resource/translations?locale=${locale}&merchantId=${merchantId}`;
     const data = await fetchMethod(path, MethodTypes.GET, null);
     return data;
   },
-}
-
+};
 
 export default api;
