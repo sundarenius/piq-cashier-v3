@@ -3,19 +3,28 @@ import SelectAmount from 'components/SelectAmount';
 import Input from 'components/Input';
 import TransactionsOverview from 'components/TransactionsOverview';
 import SubmitButton from 'components/SubmitButton';
+import ListHeader from 'components/ListHeader';
 
 interface Props {
-  paymentMethod: any
+  paymentMethod: any,
+  showDetails: boolean
 }
 
-const PaymentMethodDetails:FC<Props> = ({ paymentMethod }): JSX.Element => {
+const PaymentMethodDetails:FC<Props> = ({ paymentMethod, showDetails }): JSX.Element => {
   console.log(paymentMethod);
   return (
     <div className="container" id="payment-method-details-container">
-      <SelectAmount />
-      <Input />
-      <TransactionsOverview />
-      <SubmitButton />
+      <ListHeader paymentMethod={paymentMethod} />
+
+      {showDetails && (
+        <>
+          <SelectAmount />
+          <Input />
+          <TransactionsOverview />
+          <SubmitButton />
+        </>
+      )}
+
     </div>
   );
 };

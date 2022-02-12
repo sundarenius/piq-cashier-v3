@@ -56,7 +56,7 @@ const ListHeader:FC<Props> = ({ paymentMethod }): JSX.Element => {
           </Grid.Column>
         </Grid.Row>
 
-        <Grid.Row className="container" columns={16}>
+        <Grid.Row columns={16}>
           {paymentMethod?.maskedAccount && <MaskedAccount paymentMethod={paymentMethod} />}
         </Grid.Row>
       </Grid>

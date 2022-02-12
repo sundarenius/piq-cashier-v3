@@ -25,6 +25,10 @@
   padding: 15px!important;
 }
 
+.ui.grid>.row>.column {
+  padding: 0!important;
+}
+
 #list-payment-methods-container .payment-method:not(.active):hover {
   filter: contrast(0.5);
 }

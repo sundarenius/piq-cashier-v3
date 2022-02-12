@@ -1,7 +1,6 @@
 import type { FC } from 'react';
 import type { PageProps } from 'types/globals';
 import { ListTypes } from 'types/globals';
-import ListHeader from 'components/ListHeader';
 import PaymentMethodDetails from 'components/PaymentMethodDetails';
 import { useAppSelector } from 'redux/redux-hooks';
 import { paymentMethodsAsConfig } from 'utils/helpers';
@@ -41,9 +40,16 @@ const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
             : 'payment-method'}
         >
 
-          {config?.listType === ListTypes.LIST && <ListHeader paymentMethod={method} />}
+          { config?.listType === ListTypes.LIST && (
+            <PaymentMethodDetails
+              showDetails={showPaymentMethodDetails(method)}
+              paymentMethod={method}
+            />
+          )}
 
-          {showPaymentMethodDetails(method) && <PaymentMethodDetails paymentMethod={method} />}
+          {config?.listType === ListTypes.GRID && (
+            <h4>Grid view</h4>
+          )}
 
         </div>
       ))}
