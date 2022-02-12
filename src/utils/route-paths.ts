@@ -11,9 +11,10 @@ const Transactions = lazy(() => import('pages/Transactions'));
 
 interface RouteData {
   path: Paths,
-  cmpnt: FC,
+  cmpnt: FC<{ id: string }>,
   initLoader?: boolean,
-  initRequests: (params: any) => void
+  initRequests: (params: any) => void,
+  id: string
 }
 
 export const standardInitRequests = async ({ config, dispatch, contextActions }) => {
@@ -41,26 +42,33 @@ const transactionsInitRequests = async ({ config, dispatch, contextActions }) =>
   return true;
 };
 
-export const routes = (): RouteData[] => ([
-  {
-    path: Paths.LIST_PAYMENT_METHODS,
-    cmpnt: ListPaymentMethods,
-    initRequests: standardInitRequests,
-  },
-  {
-    path: Paths.PAYMENT_METHOD,
-    cmpnt: PaymentMethod,
-    initRequests: standardInitRequests,
-  },
-  {
-    path: Paths.STATUS,
-    cmpnt: Status,
-    initLoader: false,
-    initRequests: statusInitRequests,
-  },
-  {
-    path: Paths.TRANSACTIONS,
-    cmpnt: Transactions,
-    initRequests: transactionsInitRequests,
-  },
-]);
+export const routes = (): RouteData[] => {
+  const data = [
+    {
+      path: Paths.LIST_PAYMENT_METHODS,
+      cmpnt: ListPaymentMethods,
+      initRequests: standardInitRequests,
+    },
+    {
+      path: Paths.PAYMENT_METHOD,
+      cmpnt: PaymentMethod,
+      initRequests: standardInitRequests,
+    },
+    {
+      path: Paths.STATUS,
+      cmpnt: Status,
+      initLoader: false,
+      initRequests: statusInitRequests,
+    },
+    {
+      path: Paths.TRANSACTIONS,
+      cmpnt: Transactions,
+      initRequests: transactionsInitRequests,
+    },
+  ];
+
+  return data.map((pathData: any) => ({
+    ...pathData,
+    id: `${pathData.path.replace('/', '').toLowerCase()}-container`,
+  }));
+};

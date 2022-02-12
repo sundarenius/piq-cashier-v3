@@ -1,13 +1,15 @@
 import type { FC } from 'react';
 
-interface Props {}
+interface Props {
+  id: string
+}
 
-const Status:FC<Props> = (): JSX.Element => {
+const Status:FC<Props> = ({ id }): JSX.Element => {
   const txt = 'Status page';
   return (
-    <h1>
+    <div id={id}>
       {txt}
-    </h1>
+    </div>
   );
 };
 

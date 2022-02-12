@@ -46,11 +46,11 @@ const AppRoutes:FC = (): JSX.Element => {
 
   return shouldLoadApp ? (
     <Switch>
-      {Object.values(routesData.map((val) => (
+      {Object.values(routesData.map(({ path, cmpnt, initLoader = true, id }) => (
         <Route
-          key={val.path}
-          path={val.path}
-          render={() => <Suspense fallback={val.initLoader ? <h1>Loading ...</h1> : ''}><val.cmpnt /></Suspense>}
+          key={path}
+          path={path}
+          render={() => <RouteComponent Cmpnt={cmpnt} initLoader={initLoader} id={id} />}
         />
       )))}
     </Switch>
@@ -63,3 +63,14 @@ const AppRoutes:FC = (): JSX.Element => {
 };
 
 export default AppRoutes;
+
+interface RouteComponentProps {
+  initLoader: boolean,
+  Cmpnt: FC<{ id: string }>,
+  id: string
+}
+const RouteComponent: FC<RouteComponentProps> = ({ initLoader, Cmpnt, id }) => (
+  <Suspense fallback={initLoader ? <h1>Loading ...</h1> : ''}>
+    <Cmpnt id={id} />
+  </Suspense>
+);
