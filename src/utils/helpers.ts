@@ -10,7 +10,9 @@ import { store } from 'redux/store';
 
 export const urlParamsToObject = () => {
   const urlSearch = window.location.search.substring(1);
-  const params = JSON.parse(`{"${decodeURI(urlSearch).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`);
+  const params = urlSearch
+    ? JSON.parse(`{"${decodeURI(urlSearch).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"')}"}`)
+    : '';
   return params;
 };
 
