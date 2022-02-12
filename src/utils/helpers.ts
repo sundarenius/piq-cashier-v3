@@ -116,10 +116,7 @@ export const getShouldLoadApp = async ({
     contextActions,
   });
 
-  const res = await handleInitialApiRequests(initRequestsCallback);
-
-  console.log('res all done');
-  console.log(res);
+  await handleInitialApiRequests(initRequestsCallback);
 
   setShouldLoadApp(Boolean(config));
 };

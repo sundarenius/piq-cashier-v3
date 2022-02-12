@@ -32,7 +32,7 @@ const AppRoutes:FC = (): JSX.Element => {
 
   useEffect(() => {
     const historyPush = (path: string) => history.push(path + history.location.search);
-    if (!shouldLoadApp) {
+    if (!shouldLoadApp && config) {
       getShouldLoadApp({
         setShouldLoadApp,
         config,
