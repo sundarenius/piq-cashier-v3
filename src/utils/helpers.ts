@@ -285,18 +285,22 @@ const sortListFirstPaymentMethods = (paymentMethods: any) => {
 };
 
 export const paymentMethodsAsConfig = (paymentMethods: any, config: Partial<Config>|null) => {
-  const { showAccounts } = config || {};
+  const { showAccounts: sa } = config || {};
+  const showAccounts = sa?.toString();
 
   switch (showAccounts) {
     default:
     case ShowAccounts.LIST_FIRST:
       return sortListFirstPaymentMethods(paymentMethods);
     case ShowAccounts.LIST_WITH_PM:
-      return paymentMethods;
+      return paymentMethods; // needs to sorted
     case ShowAccounts.INLINE:
-      return paymentMethods;
+      return paymentMethods; // as is
     case ShowAccounts.FALSE:
-      return paymentMethods;
+      return paymentMethods.map((method) => ({
+        ...method,
+        accounts: null,
+      }));
   }
 };
 
