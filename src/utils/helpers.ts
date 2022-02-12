@@ -4,9 +4,11 @@ import {
   ConfigKeys,
   NotInitialCrucialConfig,
   Paths,
+  ShowAccounts,
 } from 'types/globals';
 import API from 'service/service';
 import { store } from 'redux/store';
+import { v4 as uuidv4 } from 'uuid';
 
 export const urlParamsToObject = () => {
   const urlSearch = window.location.search.substring(1);
@@ -241,4 +243,75 @@ export const getPaymentMethodSubheader = (method: any, t: any) => {
   return (service && getSubheader(service))
     || (providerType && getSubheader(providerType))
     || (type && getSubheader(type));
+};
+
+export const formatPaymentMethods = (paymentMethods: any, config: Config) => {
+  const paymentMethodsData = paymentMethods.data[0].methods.map((method) => {
+    const methodData = {
+      ...method,
+      uuid: uuidv4(),
+    };
+    if (methodData.accounts && methodData.accounts.length > 0) {
+      methodData.accounts.forEach((account) => {
+        account.uuid = uuidv4();
+        if (methodData.logoUrl) account.logoUrl = methodData.logoUrl;
+      });
+    }
+    return methodData;
+  });
+
+  console.log('config from formatPaymentMethods');
+  console.log(config);
+
+  return paymentMethodsData;
+};
+
+const sortListFirtsPaymentMethods = (paymentMethods: any) => {
+  let result: any[] = [];
+
+  paymentMethods.forEach((method: any) => {
+    if (method.accounts && method.accounts.length > 0) {
+      result = [
+        ...result,
+        ...method.accounts.filter((val) => val.status === 'ACTIVE') as any[],
+      ];
+    }
+  });
+
+  return [
+    ...result,
+    ...paymentMethods,
+  ];
+};
+
+export const paymentMethodsAsConfig = (paymentMethods: any, config: Partial<Config>|null) => {
+  const { showAccounts } = config || {};
+
+  switch (showAccounts) {
+    default:
+    case ShowAccounts.LIST_FIRST:
+      return sortListFirtsPaymentMethods(paymentMethods);
+    case ShowAccounts.LIST_WITH_PM:
+      return paymentMethods;
+    case ShowAccounts.INLINE:
+      return paymentMethods;
+    case ShowAccounts.FALSE:
+      return paymentMethods;
+  }
+};
+
+export const getLogoUrl = (paymentMethod: any) => {
+  const { service, providerType, type, logoUrl } = paymentMethod;
+  if (logoUrl) return logoUrl;
+
+  // Fallback ...
+  const baseUrl = 'https://static.paymentiq.io/';
+
+  const formatUrl = (str: string) => `${baseUrl}${str.toLowerCase()}.png`;
+
+  // Skip translations as in CashierV2, upload via BO2 only
+
+  return (service && formatUrl(service))
+    || (providerType && formatUrl(providerType))
+    || (type && formatUrl(type));
 };

@@ -4,7 +4,9 @@ import { Paths, ConfigKeys } from 'types/globals';
 import type { PageProps } from 'types/globals';
 import API from 'service/service';
 import { initTranslations } from 'utils/translations';
-import { v4 as uuidv4 } from 'uuid';
+import {
+  formatPaymentMethods,
+} from 'utils/helpers';
 
 const ListPaymentMethods = lazy(() => import('pages/ListPaymentMethods'));
 const PaymentMethod = lazy(() => import('pages/PaymentMethod'));
@@ -24,22 +26,12 @@ export const standardInitRequests = async ({ config, dispatch, contextActions })
   const translationsRes = API.fetchTranslations(config);
   const [paymentMethods, translations] = await Promise.all([paymentMethodsRes, translationsRes]);
   initTranslations(translations);
-  const paymentMethodsData = paymentMethods.data[0].methods.map((method) => {
-    const methodData = {
-      ...method,
-      uuid: uuidv4(),
-    };
-    if (methodData.accounts && methodData.accounts.length > 0) {
-      methodData.accounts.forEach((account) => {
-        account.uuid = uuidv4();
-      });
-    }
-    return methodData;
-  });
+  const paymentMethodsData = formatPaymentMethods(paymentMethods, config);
 
   if (config[ConfigKeys.AUTO_OPEN_FIRST_PAYMENT_METHOD]) {
     dispatch(contextActions.setActivePaymentMethod(paymentMethodsData[0]));
   }
+
   dispatch(contextActions.setPaymentMethods(paymentMethodsData));
   return true;
 };

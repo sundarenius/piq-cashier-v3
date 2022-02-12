@@ -4,6 +4,7 @@ import { ListTypes } from 'types/globals';
 import ListHeader from 'components/ListHeader';
 import PaymentMethodDetails from 'components/PaymentMethodDetails';
 import { useAppSelector } from 'redux/redux-hooks';
+import { paymentMethodsAsConfig } from 'utils/helpers';
 
 const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
   const paymentMethods = useAppSelector(({ context }) => context.paymentMethods);
@@ -27,11 +28,13 @@ const ListPaymentMethods:FC<PageProps> = ({ id }): JSX.Element => {
     border: config?.listType === ListTypes.LIST ? '1px solid lightgrey' : '',
   };
 
+  const paymentMethodsConfig = paymentMethodsAsConfig(paymentMethods, config);
+
   return (
     <div id={id}>
-      {paymentMethods.map((method: any) => (
+      {paymentMethodsConfig.map((method: any) => (
         <div
-          key={method.txType}
+          key={method.uuid}
           style={style}
           className={method.uuid === activePaymentMethod?.uuid
             ? `active payment-method ${getMethodClass(method)}`

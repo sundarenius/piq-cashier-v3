@@ -3,12 +3,15 @@ import { useAppDispatch, useAppSelector } from 'redux/redux-hooks';
 import { contextActions } from 'redux/actions';
 import {
   Header,
+  Grid,
 } from 'semantic-ui-react';
 import { useTranslation } from 'react-i18next';
 import {
   getPaymentMethodName,
   getPaymentMethodSubheader,
 } from 'utils/helpers';
+import MaskedAccount from 'components/MaskedAccount';
+import Logo from 'components/Logo';
 
 interface Props {
   paymentMethod: any
@@ -31,6 +34,9 @@ const ListHeader:FC<Props> = ({ paymentMethod }): JSX.Element => {
     }
   };
 
+  const paymentName = getPaymentMethodName(paymentMethod, t);
+  const subheader = getPaymentMethodSubheader(paymentMethod, t);
+
   return (
     <Header
       style={style}
@@ -38,8 +44,23 @@ const ListHeader:FC<Props> = ({ paymentMethod }): JSX.Element => {
       onClick={onPaymentClick}
       onKeyPress={onPaymentClick}
     >
-      <h3 id="payment-name">{getPaymentMethodName(paymentMethod, t)}</h3>
-      <p id="payment-subheader">{getPaymentMethodSubheader(paymentMethod, t)}</p>
+      <Grid>
+        <Grid.Row columns={2}>
+          <Grid.Column>
+            <Logo paymentMethod={paymentMethod} paymentName={paymentName} />
+          </Grid.Column>
+
+          <Grid.Column textAlign="right">
+            <h3 className="payment-name">{paymentName}</h3>
+            <p className="payment-subheader">{subheader}</p>
+          </Grid.Column>
+        </Grid.Row>
+
+        <Grid.Row className="container" columns={16}>
+          {paymentMethod?.maskedAccount && <MaskedAccount paymentMethod={paymentMethod} />}
+        </Grid.Row>
+      </Grid>
+
     </Header>
   );
 };
