@@ -20,6 +20,11 @@
   max-width: 100%;
 }
 
+.ui.header.container,
+.container {
+  padding: 15px;
+}
+
 // *** margins and paddings START ***
 $one: 5px!important;
 $oneY: 5px 0!important;

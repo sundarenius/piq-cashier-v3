@@ -16,6 +16,17 @@ export const urlParamsToObject = () => {
   return params;
 };
 
+const formatConfigValue = (value: string) => {
+  switch (value) {
+    case 'true':
+      return true;
+    case 'false':
+      return false;
+    default:
+      return value;
+  }
+};
+
 const filterValidConfig = (
   config: Record<string, any>,
   filterBy: string[],
@@ -27,9 +38,9 @@ const filterValidConfig = (
 
   configKeys.forEach((key) => {
     if (validKeys.includes(key)) {
-      validConfig[key] = config[key];
+      validConfig[key] = formatConfigValue(config[key]);
     } else {
-      inValidConfig[key] = config[key];
+      inValidConfig[key] = formatConfigValue(config[key]);
     }
   });
 
@@ -215,4 +226,11 @@ export const isUserMobile = () => {
   const navigatorData: any = window.navigator;
   const check = navigatorData.userAgentData.mobile;
   return check;
+};
+
+export const getPaymentMethodName = (method: any, t: any) => {
+  const { service, providerType, type } = method;
+  return (service && t(service.toLowerCase()))
+    || (providerType && t(providerType.toLowerCase()))
+    || (type && t(type.toLowerCase()));
 };
